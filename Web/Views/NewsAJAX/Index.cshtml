@@ -1,0 +1,147 @@
+﻿@model NewsViewModel
+
+@{
+    ViewData["Title"] = "Новостная лента";
+}
+
+<style>
+    @@font-face {
+        font-family: 'FontAwesome';
+        src: url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2') format('woff2'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff') format('woff'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/fonts/fontawesome-webfont.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal
+    }
+
+    .glyphicon {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+    }
+
+    .glyphicon-chevron-right:before {
+        content: "\f054";
+    }
+
+    .glyphicon-chevron-left:before {
+        content: "\f053";
+    }
+</style>
+
+<h1>Новостная лента</h1>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
+
+<form asp-controller="NewsAJAX" asp-action="GetNewsList" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#results" method="get">
+    <p>
+        <label>Источники ленты</label> <br />
+        @Html.DropDownList("sources", new MultiSelectList(Model.Sources))
+    </p>
+    <p>
+        @Html.RadioButton("sort", "sortByDate", true)
+        <label>Сортировать по дате</label> <br />
+        @Html.RadioButton("sort", "sortBySourse")
+        <label>Сортировать по источнику</label> <br />
+    </p>
+    <input type="submit" value="Отправить" />
+</form>
+@if (Model.PageInfo.HasPreviousPage)
+{
+    <a asp-controller="NewsAJAX"
+       asp-action="GetNewsList"
+       asp-route-source="@(Model.Source)"
+       asp-route-sort="@(Model.Sort)"
+       asp-route-page="@(Model.PageInfo.PageNumber - 1)"
+       data-ajax="true" data-ajax-mode="replace"
+       data-ajax-update="#results" method="get"
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageInfo.HasNextPage)
+{
+    <a asp-controller="NewsAJAX"
+       asp-action="GetNewsList"
+       asp-route-source="@(Model.Source)"
+       asp-route-sort="@(Model.Sort)"
+       asp-route-page="@(Model.PageInfo.PageNumber + 1)"
+       data-ajax="true" data-ajax-mode="replace"
+       data-ajax-update="#results" method="get"
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-right"></i>
+        Вперёд
+    </a>
+}
+<fieldset>
+    <table class="table" id="results">
+        <thead>
+            <tr>
+                <th>
+                    @Html.Name("Источник")
+                </th>
+                <th>
+                    @Html.Name("Название")
+                </th>
+                <th>
+                    @Html.Name("Описание")
+                </th>
+                <th>
+                    @Html.Name("Дата")
+                </th>
+                <th>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.NewsList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        <a href=@item.Link>@Html.Name(item.Title)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PublishDate)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</fieldset>
+@if (Model.PageInfo.HasPreviousPage)
+{
+    <a asp-controller="NewsAJAX"
+       asp-action="GetNewsList"
+       asp-route-source="@(Model.Source)"
+       asp-route-sort="@(Model.Sort)"
+       asp-route-page="@(Model.PageInfo.PageNumber - 1)"
+       data-ajax="true" data-ajax-mode="replace"
+       data-ajax-update="#results" method="get"
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageInfo.HasNextPage)
+{
+    <a asp-controller="NewsAJAX"
+       asp-action="GetNewsList"
+       asp-route-source="@(Model.Source)"
+       asp-route-sort="@(Model.Sort)"
+       asp-route-page="@(Model.PageInfo.PageNumber + 1)"
+       data-ajax="true" data-ajax-mode="replace"
+       data-ajax-update="#results" method="get"
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-right"></i>
+        Вперёд
+    </a>
+}
