@@ -31,7 +31,6 @@
 </style>
 
 
-
 <form asp-controller="NewsAJAX" asp-action="GetNewsList" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#results" method="get">
     <h1>Новостная лента</h1>
     <p>
@@ -74,48 +73,46 @@
         Вперёд
     </a>
 }
-<div id="results">
-    <table class="table" >
-        <thead>
+<table class="table" id="results">
+    <thead>
+        <tr>
+            <th>
+                @Html.Name("Источник")
+            </th>
+            <th>
+                @Html.Name("Название")
+            </th>
+            <th>
+                @Html.Name("Описание")
+            </th>
+            <th>
+                @Html.Name("Дата")
+            </th>
+            <th>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.NewsList)
+        {
             <tr>
-                <th>
-                    @Html.Name("Источник")
-                </th>
-                <th>
-                    @Html.Name("Название")
-                </th>
-                <th>
-                    @Html.Name("Описание")
-                </th>
-                <th>
-                    @Html.Name("Дата")
-                </th>
-                <th>
-                </th>
-                <th></th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    <a href=@item.Link>@Html.Name(item.Title)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishDate)
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.NewsList)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        <a href=@item.Link>@Html.Name(item.Title)</a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Content)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PublishDate)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+        }
+    </tbody>
+</table>
 @if (Model.PageInfo.HasPreviousPage)
 {
     <a asp-controller="NewsAJAX"

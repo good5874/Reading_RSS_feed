@@ -54,7 +54,7 @@ namespace Web.Controllers
             }
 
             modelView.NewsList = result.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            var count = _context.News.Count();
+            var count = result.Count();
             modelView.PageInfo = new PageInfoViewModel(count, page, pageSize);
 
             return View(nameof(Index), modelView);
