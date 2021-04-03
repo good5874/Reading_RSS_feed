@@ -35,32 +35,26 @@ namespace Web.Controllers
             modelView.Source = source;
             modelView.Sort = sort;
 
-            if (source == "interfax")
+            IEnumerable<ItemNews> result;
+            if (source == "interfax" || source == "habr")
             {
-                modelView.NewsList = _context.News.Where(e => e.Id.Contains(source)).ToList();
-            }
-            else if(source == "habr")
-            {
-                modelView.NewsList = _context.News.Where(e => e.Id.Contains(source)).ToList();
+                result = _context.News.Where(e => e.Id.Contains(source));
             }
             else
             {
-                modelView.NewsList = _context.News.ToList();
+                result = _context.News;
             }
-
-            if(sort == "sortByDate")
+            if (sort == "sortByDate")
             {
-                modelView.NewsList = modelView.NewsList.OrderByDescending(e => e.PublishDate).ToList();
+                result = result.OrderByDescending(e => e.PublishDate);
             }
-            else if(sort == "sortBySourse")
+            else if (sort == "sortBySourse")
             {
-                modelView.NewsList = modelView.NewsList.OrderBy(e => e.Id).ToList();
+                result = result.OrderBy(e => e.Id);
             }
 
-
-            var count = modelView.NewsList.Count();
-            var items =  modelView.NewsList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            modelView.NewsList = items;
+            modelView.NewsList = result.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var count = _context.News.Count();
             modelView.PageInfo = new PageInfoViewModel(count, page, pageSize);
 
             return View(nameof(Index), modelView);

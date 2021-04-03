@@ -30,8 +30,7 @@
     }
 </style>
 
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
+
 
 <form asp-controller="NewsAJAX" asp-action="GetNewsList" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#results" method="get">
     <h1>Новостная лента</h1>
@@ -75,8 +74,8 @@
         Вперёд
     </a>
 }
-<fieldset>
-    <table class="table" id="results">
+<div id="results">
+    <table class="table" >
         <thead>
             <tr>
                 <th>
@@ -116,7 +115,7 @@
             }
         </tbody>
     </table>
-</fieldset>
+</div>
 @if (Model.PageInfo.HasPreviousPage)
 {
     <a asp-controller="NewsAJAX"
