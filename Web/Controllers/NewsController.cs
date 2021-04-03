@@ -29,19 +29,19 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetNewsList( string sources, string sort, int page = 1)
+        public async Task<IActionResult> GetNewsList( string source, string sort, int page = 1)
         {
             NewsViewModel modelView = new NewsViewModel();
-            modelView.Source = sources;
+            modelView.Source = source;
             modelView.Sort = sort;
 
-            if (sources == "interfax")
+            if (source == "interfax")
             {
-                modelView.NewsList = _context.News.Where(e => e.Id.Contains(sources)).ToList();
+                modelView.NewsList = _context.News.Where(e => e.Id.Contains(source)).ToList();
             }
-            else if(sources == "habr")
+            else if(source == "habr")
             {
-                modelView.NewsList = _context.News.Where(e => e.Id.Contains(sources)).ToList();
+                modelView.NewsList = _context.News.Where(e => e.Id.Contains(source)).ToList();
             }
             else
             {

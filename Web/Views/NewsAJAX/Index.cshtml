@@ -30,14 +30,14 @@
     }
 </style>
 
-<h1>Новостная лента</h1>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
 
 <form asp-controller="NewsAJAX" asp-action="GetNewsList" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#results" method="get">
+    <h1>Новостная лента</h1>
     <p>
         <label>Источники ленты</label> <br />
-        @Html.DropDownList("sources", new MultiSelectList(Model.Sources))
+        @Html.DropDownList("source", new MultiSelectList(Model.Sources))
     </p>
     <p>
         @Html.RadioButton("sort", "sortByDate", true)

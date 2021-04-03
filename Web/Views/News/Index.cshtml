@@ -34,7 +34,7 @@
 <form method="get" action="~/News/GetNewsList">
     <p>
         <label>Источники ленты</label> <br />
-        @Html.DropDownList("sources", new MultiSelectList(Model.Sources))
+        @Html.DropDownList("source", new MultiSelectList(Model.Sources))
     </p>
     <p>
         @Html.RadioButton("sort", "sortByDate", true)
